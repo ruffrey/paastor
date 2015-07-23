@@ -10,6 +10,20 @@ the users.
 
 *A proxy and api for running node apps on a slave VPS.*
 
+## How it works
+
+![diagram of paastor setup](https://raw.githubusercontent.com/paastor/paastor/master/paastor-server/public/diagram.png)
+
+### Managing servers via gui
+
+![screenshot of paastor gui](https://raw.githubusercontent.com/paastor/paastor/master/paastor-server/public/dash.png)
+
+### Deploy with the command line tool
+
+```
+pstr push my-server myapp
+```
+
 ## Development and Running Locally
 
 requirements:
