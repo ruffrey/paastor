@@ -1,0 +1,49 @@
+extends ../layout
+
+block append vars
+    - title = "FAQ";
+
+block content
+    .container
+        h1 Frequently Asked Questions
+        h2 (FAQ)
+
+        br
+
+        h3#save-root-password Why do you need my root password?
+        p Your root password enables Paastor to securely log into your server and install all of the
+            | dependencies required to run a Node.js app, MongoDB, or Redis. Things like opening ports
+            | and installing packages need to be done as root.
+
+        br
+
+        h3#root-trust Can I trust you with my root password?
+        p Yes, but technically you don't need to. As soon as Paastor does it's thing, you can change
+            | your root password, if it makes you feel better. However,
+            strong Paastor does not store your root password
+            | .
+        p It may help to know:
+        ul
+            li The root password is transferred to Paastor over https.
+            li It is used for logging into the server via SSH and necessary to install the Sheep service.
+            li It is not saved in a database anywhere, even temporarily, and Paastor does not output the password to log files.
+            li Because it is not saved, you must re-enter your root password to make substantial changes on the server - like installing MongoDB, or upgrading Sheep. This also highlights that Sheep and your apps do not run as root (best practice), and cannot perform these root tasks.
+
+        br
+
+        h3#run-as-root Will my apps run as root?
+        p No, they run as a forever-monitor subprocess of Sheep, which is spawned by forever (-g).
+
+        br
+
+
+        h3#detect-ssl How do I detect if a request was HTTPS or HTTP
+        p Since HTTPS traffic to your apps (if you're using SSL) will come through a proxy,
+            |  it will not appear to be secure from your application's perspective.
+        p To detect HTTPS behind the Sheep proxy, look at the
+            code referrer
+            |  header.
+
+        pre: code referrer: https://www.example.com
+
+        br

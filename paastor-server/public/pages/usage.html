@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html ng-app="paastor">
+  <head>
+    <title>Usage guide: fast and easy deployment of Node.js apps - Paastor for Node.js</title>
+    <title>Paastor for Node.js</title>
+    <meta charset="utf8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="nodejs, paas, deployment, production, forever">
+    <meta name="description" content="Deploy and keep up Node.js apps, MongoDB and Redis, on your own server.">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="/favicon.png">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/bootstrap-lgr.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular-resource.min.js"></script>
+    <script src="https://js.stripe.com/v2/"></script>
+    <script src="/build/js/app.js"></script>
+  </head>
+  <body ng-controller="NavController">
+    <div class="container">
+      <h1>Usage</h1>
+      <h2>How to deploy a node app to your own infrastructure in 5 minutes using Paastor</h2>
+      <h4>Deploy to cloud servers, VPS, dedicated servers, and more.</h4><br><img src="/diagram.png" class="img-responsive"><br>
+      <h3>1. Sign up</h3>
+      <p><strong>Begin by creating an account</strong>and verifying your email address.</p><br>
+      <h3>2. Obtain a server</h3>
+      <p>
+        The most common option is to purchase a VPS (virtual private server) plan from a hosting company. In many
+        cases you can run multiple Node.js apps for $2 - $10 per month on a VPS.
+      </p>
+      <p>VPS hosting is very competitive and very cheap compared to cloud hosting. Examples of hosting companies are: Linode, Digital Ocean, Chicago VPS, and many more.<a href="http://serverbear.com" target="_blank">Server Bear</a>&nbsp;and&nbsp;<a href="http://lowendbox.com" target="_blank">LowEndBox</a> are tools to help you compare VPS hosts. (Paastor is not affiliated with any of the services
+         mentioned.)
+      </p>
+      <p>The only officially supported server OS on Paastor (for now) is<strong>Ubuntu 14.04.</strong></p>
+      <p>Next, be sure to create a DNS "A" record with your DNS provider, and point to your server's IP address, for the domain you intend to serve.</p><br>
+      <h3>3. Add your server to Paastor</h3>
+      <p>
+        Log in to Paastor and press the 'New Server' button from the Server Manager screen.
+         Fill out all the fields. This will install the Sheep service on your server and
+         allow you to push apps to the server.
+      </p><br>
+      <h3>4. Create an app on the server in Paastor</h3>
+      <p>From the Paastor UI, add an app to your server. You must add an app from the UI before pushing code.</p>
+      <p>Your<code>package.json</code> must have the following fields (these are example values):</p>
+      <pre><code>{
+    // a single startup script
+    "main": "aStartupScript.js",
+    // list of domains for the Sheep proxy router
+    "domains": ["example.com", "www.example.com"],
+    "engines": {
+        // a single node version - no ranges
+        "node": "0.10.31"
+    }
+}</code></pre><br>
+      <h3>5. Install the<code>pstr</code> command line tool</h3>
+      <pre><code>$  npm install -g paastor</code></pre><br>
+      <h3>6. Log in on the CLI</h3>
+      <pre><code>$   pstr login</code></pre><br>
+      <h3>7. (optional) Install the right version of Node for your app</h3>
+      <p>Use<code>pstr install-node [server] [version]</code> to add a version of Node to your server.</p>
+      <pre><code>$   pstr install-node myserver1 0.10.28</code></pre>
+      <p>Depending on the version, it may be installed quickly, or may need to compile from source.</p><br>
+      <h3>8. Push your application</h3>
+      <p>Use<code>pstr push [server] [app]</code>  to push the app in the current directory to the specified server.</p>
+      <pre><code>$  pstr push myserver1 someapp</code></pre>
+      <pre><code>push myserver1 someapp
+   Checking package.json
+     package.json exists
+     version ok 0.10.28
+     Domains look ok
+   Checking server...
+     Found myserver
+     Status ok
+     0.10.31 installed
+   Creating package from current directory...
+     Package created. 10.46mb
+   Prepping package for sending...
+     Package is ready to send.
+   Uploading and installing...
+     Ok
+   Stopping app...
+     Stopped.
+   Starting app...
+     Started
+   Cleaning up package...
+     Package cleaned.
+   Push complete.</code></pre><br>
+      <h3>9. (optional) Check the logs</h3>
+      <h5>Server logs</h5>
+      <pre><code>$  pstr logs myserver1</code></pre>
+      <h5>Application logs</h5>
+      <pre><code>$  pstr logs myserver1 someapp</code></pre><br>
+      <h3>Help</h3>
+      <p>All CLI commands can be seen by running<code>pstr --help</code>.</p><br>
+      <h3>Open source</h3>
+      <p>It's on the roadmap to release many parts of Paastor under an open source license.</p>
+      <p>Until then, refer to the<a href="/pages/docs.html#system">documentation</a> about the files Paastor puts on your server.</p>
+    </div><br><br><br><br><br><br><br>
+    <div id="footer">
+      <div class="row">
+        <div ng-show="!account.email" class="col-xs-4"><span class="help-block"><strong><a href="/">Paastor</a></strong>&nbsp;&nbsp;<span class="hidden-xs"><small> A PaaS-like experience with your own servers.</small></span></span></div>
+        <div ng-show="account.email" class="col-xs-4"><span class="help-block"><a href="/#/list"><strong><span class="hidden-xs">Paastor</span>  Server Manager</strong></a></span></div>
+        <div class="col-xs-4 center"><span class="help-block"><a href="/pages/vision.html">About</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/pages/docs.html">Docs</a></span></div>
+        <div class="col-xs-4 right"><span ng-show="account.email" class="help-block"><small class="hidden-xs"><small>{{ account.email }}</small></small>&nbsp;&nbsp;<a href="javascript:void(0)" ng-click="logout()" class="btn btn-xs btn-default">Sign Out</a></span></div>
+      </div>
+    </div>
+    <script async>
+      if (document.location.hostname === 'paastor.com') {
+          if (document.location.protocol === 'http:') {
+              window.open(document.location.href.replace('http:', 'https:'), '_self');
+          }
+          // google analytics
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      
+          ga('create', 'UA-54875912-1', 'auto');
+          ga('send', 'pageview');
+      }
+    </script>
+  </body>
+</html>

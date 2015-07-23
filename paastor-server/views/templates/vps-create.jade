@@ -1,0 +1,46 @@
+div(ng-show="!done && !saving")
+    h1 Add a server
+    br
+    p This should be a fresh
+        strong  Ubuntu 14.04 server
+        | .
+    p Expect it to be modified and to be used soley as a
+        a(href="/pages/sheep-system.html" target="_blank")  Sheep instance.
+    br
+    .row
+        .col-sm-6
+            label Server info
+            span.help-block Only letters, numbers, and dashes (-) allowed for the identifier name.
+            input.form-control(type="text" ng-model="vps._id" placeholder="Unique server name (_id)")
+            input.form-control(type="text" ng-model="vps.infrastructure" placeholder="Hosting infrastructure name")
+
+        .col-sm-6
+            label Security
+            span.help-block &nbsp;
+            input.form-control(type="text" ng-model="vps.ip" placeholder="IP address")
+            input.form-control(type="password" ng-model="vps.password" placeholder="root password (will not be saved)")
+            span.help-block: a(href="/pages/faq.html#save-root-password" target="_blank")
+                i.fa.fa-info-circle
+                |   Why do you need my root password?
+
+    br
+    .row
+        .col-sm-6
+            a(href="/#/list" tabindex="-1") Cancel
+        .col-sm-6.right
+            button.btn.btn-primary(ng-click="save()") Create
+
+br
+
+div(ng-show="saving")
+    i.fa.fa-cog.fa-spin.fa-4x
+    br
+    br
+
+div(ng-show="done")
+    h1 Done
+    p: a.btn.btn-primary(ng-href="/#/vps/{{ vps._id }}") View server
+
+.alert.alert-info(ng-show="message") {{ message }}
+
+pre#server-logs(ng-show="logs"): code {{ logs }}

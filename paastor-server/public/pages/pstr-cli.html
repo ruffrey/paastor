@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html ng-app="paastor">
+  <head>
+    <title>pstr, the Paastor command line deployment tool - Paastor for Node.js</title>
+    <title>Paastor for Node.js</title>
+    <meta charset="utf8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="nodejs, paas, deployment, production, forever">
+    <meta name="description" content="Deploy and keep up Node.js apps, MongoDB and Redis, on your own server.">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="/favicon.png">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/bootstrap-lgr.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular-resource.min.js"></script>
+    <script src="https://js.stripe.com/v2/"></script>
+    <script src="/build/js/app.js"></script>
+  </head>
+  <body ng-controller="NavController">
+    <div class="container">
+      <h1><code>pstr</code> - the Paastor CLI tool</h1>
+      <h3>Installation</h3>
+      <pre><code>$   npm install -g paastor</code></pre>
+      <h3>List of commands</h3>
+      <pre><code>$   pstr --help
+  
+Usage: pstr [options] [command]
+ 
+Commands:
+ 
+login [options] 
+  Sign into Paastor (prompts for credentials or use -u, --user and -p, --pass)
+ 
+logout 
+  Sign out of Paastor
+ 
+servers 
+  Get a list of servers for this account
+ 
+logs [server] [app]
+  Get the logs for a server (when no app param) or an app on the server
+ 
+server [_id]
+  Get detailed info about a server
+ 
+push [options] [server] [app]
+  Push an app to your server (both must already exist)
+ 
+create-app [server] [app]
+  Create an app
+ 
+stop [server] [app]
+  Stop an app
+ 
+start [server] [app]
+  Start an app
+ 
+restart [server] [app]
+  Stop then immediately start an app
+ 
+setenv [server] [app]
+  Initiate the process of setting an app environment variable (must restart app to take effect)
+ 
+install-node [server] [version]
+  Trigger the installation of a version of Node.js, to be available to apps.
+ 
+ 
+Options:
+ 
+  -h, --help     output usage information
+  -V, --version  output the version number
+ 
+ 
+ </code></pre>
+      <h3 id="no-npm">Disabling NPM install</h3>
+      <p>Sometimes you might has special packages or other reasons for wanting to disable <code>npm install</code>.</p>
+      <p>When you use the <code>pstr push [server] [app]</code> command, Sheep will attempt to run <code>npm install</code> using the version of Node specified in your <code>package.json</code> <code>engines.node</code>.</p>
+      <p>This can be turned off with the <code>--no-npm</code> flag.</p>
+      <pre><code>$   pstr push myserver myapp --no-npm</code></pre>
+    </div><br><br><br><br><br><br><br>
+    <div id="footer">
+      <div class="row">
+        <div ng-show="!account.email" class="col-xs-4"><span class="help-block"><strong><a href="/">Paastor</a></strong>&nbsp;&nbsp;<span class="hidden-xs"><small> A PaaS-like experience with your own servers.</small></span></span></div>
+        <div ng-show="account.email" class="col-xs-4"><span class="help-block"><a href="/#/list"><strong><span class="hidden-xs">Paastor</span>  Server Manager</strong></a></span></div>
+        <div class="col-xs-4 center"><span class="help-block"><a href="/pages/vision.html">About</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/pages/docs.html">Docs</a></span></div>
+        <div class="col-xs-4 right"><span ng-show="account.email" class="help-block"><small class="hidden-xs"><small>{{ account.email }}</small></small>&nbsp;&nbsp;<a href="javascript:void(0)" ng-click="logout()" class="btn btn-xs btn-default">Sign Out</a></span></div>
+      </div>
+    </div>
+    <script async>
+      if (document.location.hostname === 'paastor.com') {
+          if (document.location.protocol === 'http:') {
+              window.open(document.location.href.replace('http:', 'https:'), '_self');
+          }
+          // google analytics
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      
+          ga('create', 'UA-54875912-1', 'auto');
+          ga('send', 'pageview');
+      }
+    </script>
+  </body>
+</html>

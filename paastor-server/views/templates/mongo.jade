@@ -1,0 +1,127 @@
+h4(ng-show="!loading"): a(ng-href="/#/list") 
+        i.fa.fa-angle-left
+        |  &nbsp;servers
+
+h1(ng-show="loading && message") {{ message }}
+
+span.help-block(ng-show="!vps || loading"): i.fa.fa-circle-o-notch.fa-spin.fa-4x
+
+
+div(ng-show="vps && !vps.mongo && !loading && !removed && !installed")
+    h1 Install MongoDB
+    span.help-block version 2.4
+    h5 (experimental)
+    .alert.alert-info.center(ng-show="message") {{ message }}
+    
+    br
+    .row
+
+        .col-sm-6
+
+            label New MongoDB username
+
+            input.form-control(type="text" ng-model="mongo.username" placeholder="admin1234")
+            span.help-block Username must be alphanumeric only.
+
+            br
+
+            label New MongoDB password
+            input.form-control(type="password" ng-model="mongo.password" placeholder="**********")
+            span.help-block Password should be long and alphanumeric only.
+            span.help-block: strong For your protection, Paastor does not store your MongoDB credentials.
+            
+        .col-sm-6
+            label Port
+            span.help-block By default, MongoDB runs on port 
+                strong 27017
+                | . It is recommended to change 
+                | the default port if you plan to expose MongoDB
+                | to remote connections.
+            .input-group
+                input.form-control(type="number" step="1" ng-model="mongo.port" placeholder="27017")
+                .input-group-btn
+                    button.btn.btn-default(ng-click="portgen()") Port 
+                        i.fa.fa-refresh
+    br
+    .row
+        .col-sm-6
+
+            label Access
+            span.help-block MongoDB can be installed just for local apps on the server, 
+                |  or it can be made available to apps on other servers, too.
+            .btn-group
+                button.btn.btn-sm(ng-click="mongo.localOnly = true" 
+                    ng-class="{ 'active btn-success': mongo.localOnly, 'btn-default': !mongo.localOnly }")
+                    | Local access only
+                button.btn.btn-sm(ng-click="mongo.localOnly = false" 
+                    ng-class="{ 'active btn-warning': !mongo.localOnly && !mongos.noPassword, 'btn-default': mongo.localOnly, 'active btn-danger': mongo.noPassword && !mongo.localOnly }")
+                    | Enable remote access
+        
+        .col-sm-6
+            label Root Password
+            span.help-block For installation. This will not be saved by Paastor.
+            input.form-control(type="password" ng-model="mongo.rootPassword" placeholder="**********")
+            
+            br
+            .animated.pulse.alert.alert-danger(ng-show="!mongo.localOnly && !mongo.password && !mongo.username")
+                | You have selected to have a remotely available MongoDB instance without a 
+                | username and password. 
+                span(ng-show="mongo.port === 27017") It is also on the default port.
+            
+
+            br
+            p: strong Take note of the username, password and port. 
+                |  Paastor does not store these, for security reasons.
+
+            div.pull-right.right
+                button.btn.btn-primary(ng-click="install()") Install and reboot
+                span.help-block on server 
+                    strong {{ vps._id }}
+
+    br
+div(ng-show="installed")
+    h1 MongoDB was installed
+    .alert.alert-info.center(ng-show="message") {{ message }}
+    
+    
+    br
+
+    
+    p(ng-show="!mongo.localOnly")
+        i.fa.fa-warning
+        | &nbsp;&nbsp;
+        strong You must 
+            a(href="/pages/docs.html#mongo") authenticate using the admin database
+        |  or the credentials you just setup 
+        strong will not work
+        | .
+
+    p MongoDB databases are created on-the-fly as you connect. So as long as you 
+        a(href="/pages/docs.html#mongo") authenticate correctly
+        |  you are ready to start using the database.
+
+    
+    a.btn.btn-primary(ng-href="/#/vps/{{ vps._id }}") Ok
+
+
+div(ng-show="vps && vps.mongo && !loading && !installed")
+    h1 Remove MongoDB
+    .alert.alert-info.center(ng-show="message") {{ message }}
+    p: strong All settings and data will be deleted.
+    br
+    .row
+        .col-sm-4
+            input.form-control(type="password" ng-model="mongo.rootPassword" placeholder="Root password")
+    br
+    button.btn.btn-danger(ng-click="uninstall()") Uninstall and delete data    
+    span.help-block from server 
+        strong {{ vps._id }}
+
+
+div(ng-show="removed")
+    .alert.alert-info.center(ng-show="message") {{ message }}
+    h1 MongoDB was removed
+    p MongoDB has been successfully removed from the server.
+    br
+    a.btn.btn-primary(ng-href="/#/vps/{{ vps._id }}") Ok
+

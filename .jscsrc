@@ -1,0 +1,60 @@
+{
+  "requireCurlyBraces": [
+      "if",
+      "else",
+      "for",
+      "while",
+      "do",
+      "try",
+      "catch"
+  ],
+  "requireSpaceAfterKeywords": [
+      "do",
+      "for",
+      "if",
+      "else",
+      "switch",
+      "case",
+      "try",
+      "void",
+      "while",
+      "return",
+      "function"
+  ],
+  "disallowKeywords": ["with"],
+  "requireSpaceBeforeBlockStatements": true,
+  "requireSpacesInConditionalExpression": true,
+  "disallowSpacesInNamedFunctionExpression": {
+      "beforeOpeningRoundBrace": true
+  },
+  "disallowSpacesInFunctionDeclaration": {
+      "beforeOpeningRoundBrace": true
+  },
+  "requireSpacesInFunction": {
+      "beforeOpeningCurlyBrace": true
+  },
+  "disallowMultipleVarDecl": true,
+  "disallowMultipleLineBreaks": false,
+  "requireBlocksOnNewline": 1,
+  "disallowQuotedKeysInObjects": "allButReserved",
+  "disallowSpaceAfterObjectKeys": true,
+  "requireSpaceBeforeObjectValues": true,
+  "requireCommaBeforeLineBreak": true,
+  "disallowSpaceBeforePostfixUnaryOperators": true,
+  "requireSpaceBeforeBinaryOperators": true,
+  "requireSpaceAfterBinaryOperators": true,
+  "disallowMixedSpacesAndTabs": true,
+  "disallowTrailingWhitespace": true,
+  "disallowTrailingComma": true,
+  "requireLineFeedAtFileEnd": true,
+  "requireCapitalizedConstructors": true,
+  "disallowYodaConditions": true,
+  "validateParameterSeparator": ", ",
+  "validateIndentation": 4,
+  "excludeFiles": [
+      "node_modules/**",
+      "coverage/**",
+      "assets/**",
+      ".tmp/**"
+  ]
+}

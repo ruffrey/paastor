@@ -1,0 +1,27 @@
+extends ../layout
+
+block append vars
+    - title = "Easy SSL setup for your Node.js apps";
+
+block content
+    .container
+        
+        h1 SSL on Paastor
+        blockquote
+            strong SSL is available on paid accounts only.
+            br
+            | You don't have to pay very much, but you have to be paying something!
+
+
+        p Add SSL certs and keys in the Server Manager.
+        p SSL certificates can be re-uploaded  an unlimited number of times from the web UI - 
+            |  in case it changes, or you make a mistake.
+        
+        h3 What happens on the server
+        p Sheep contains a proxy and a router with support for SSL.
+        p When you add SSL to an app, the proxy will use the certificates during the requests on behalf
+            |  of your app, then route the traffic to your app on 
+            code process.env.PAASTOR_PORT
+            | .
+        p This setup is similar to nginx or other proxy servers.
+        br

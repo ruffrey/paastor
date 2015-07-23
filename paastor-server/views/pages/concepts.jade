@@ -1,0 +1,28 @@
+extends ../layout
+
+block append vars
+    - title = "Basic overview of Paastor Node.js deployment cycle";
+
+block content
+    .container    
+        h1 Paastor Concepts
+        p: em Overview
+
+        h3#paastor Paastor
+        p: em A service with a CLI 
+            code npm install -g paastor
+            |  that helps you deploy Node.js apps in minimal steps.
+        p Paastor will install the Sheep service on your server, then you can add as many apps as you need.
+        p A thin UI on the web lets you start and stop apps, manage environment variables, install MongoDB 
+            | and Redis, and upload SSL certificates.
+        
+        h3#sheep Sheep
+        p: em A deployment and app management service on your server.
+        p Paastor securely sends commands and apps to your server via Sheep.
+        p Sheep keeps your apps running and restarts them when they crash.
+        p Sheep has a proxy that supports SSL and an API for Paastor to manage your apps.
+        p Becoming a Sheep does not mean your server is locked down in any way.
+
+        br
+        h3#cli CLI
+        p: em A command line interface (CLI) to control your apps and servers on the Paastor service.

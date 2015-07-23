@@ -1,0 +1,24 @@
+extends ../layout
+
+block append vars
+    - title = "Super fast Redis installation";
+
+block content
+    .container
+        h1 Redis on Paastor
+
+        p With a few clicks, you can have a Redis instance running on any of your servers.
+
+        p From the Server Manager, hit the Redis checkbox for one of your servers and fill out the required
+            |  fields. In a few moments you will have Redis installed.
+
+
+        h5 Changing the password / lost password
+        p If you lose the Redis password, want to change it, or want to remove it, log into the 
+            | server as root and edit 
+            code requirepass
+            |  in 
+            code /etc/redis/redis.conf
+            | .
+
+        br

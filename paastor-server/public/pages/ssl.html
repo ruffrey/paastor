@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html ng-app="paastor">
+  <head>
+    <title>Easy SSL setup for your Node.js apps - Paastor for Node.js</title>
+    <title>Paastor for Node.js</title>
+    <meta charset="utf8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="nodejs, paas, deployment, production, forever">
+    <meta name="description" content="Deploy and keep up Node.js apps, MongoDB and Redis, on your own server.">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="/favicon.png">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/bootstrap-lgr.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular-resource.min.js"></script>
+    <script src="https://js.stripe.com/v2/"></script>
+    <script src="/build/js/app.js"></script>
+  </head>
+  <body ng-controller="NavController">
+    <div class="container">
+      <h1>SSL on Paastor</h1>
+      <blockquote><strong>SSL is available on paid accounts only.</strong><br>You don't have to pay very much, but you have to be paying something!</blockquote>
+      <p>Add SSL certs and keys in the Server Manager.</p>
+      <p>
+        SSL certificates can be re-uploaded  an unlimited number of times from the web UI - 
+         in case it changes, or you make a mistake.
+      </p>
+      <h3>What happens on the server</h3>
+      <p>Sheep contains a proxy and a router with support for SSL.</p>
+      <p>
+        When you add SSL to an app, the proxy will use the certificates during the requests on behalf
+         of your app, then route the traffic to your app on <code>process.env.PAASTOR_PORT</code>.
+      </p>
+      <p>This setup is similar to nginx or other proxy servers.</p><br>
+    </div><br><br><br><br><br><br><br>
+    <div id="footer">
+      <div class="row">
+        <div ng-show="!account.email" class="col-xs-4"><span class="help-block"><strong><a href="/">Paastor</a></strong>&nbsp;&nbsp;<span class="hidden-xs"><small> A PaaS-like experience with your own servers.</small></span></span></div>
+        <div ng-show="account.email" class="col-xs-4"><span class="help-block"><a href="/#/list"><strong><span class="hidden-xs">Paastor</span>  Server Manager</strong></a></span></div>
+        <div class="col-xs-4 center"><span class="help-block"><a href="/pages/vision.html">About</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/pages/docs.html">Docs</a></span></div>
+        <div class="col-xs-4 right"><span ng-show="account.email" class="help-block"><small class="hidden-xs"><small>{{ account.email }}</small></small>&nbsp;&nbsp;<a href="javascript:void(0)" ng-click="logout()" class="btn btn-xs btn-default">Sign Out</a></span></div>
+      </div>
+    </div>
+    <script async>
+      if (document.location.hostname === 'paastor.com') {
+          if (document.location.protocol === 'http:') {
+              window.open(document.location.href.replace('http:', 'https:'), '_self');
+          }
+          // google analytics
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      
+          ga('create', 'UA-54875912-1', 'auto');
+          ga('send', 'pageview');
+      }
+    </script>
+  </body>
+</html>

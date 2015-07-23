@@ -1,0 +1,33 @@
+#! /bin/sh
+
+#
+
+echo 'Cleaning build dir...'
+rm -R build/tmp/
+echo 'Done pre-cleaning'
+echo 'Making output folders...'
+mkdir build/
+mkdir build/tmp/
+echo 'Done making output folders'
+echo 'Versioning sheep...'
+cd sheep/ && SHEEP_VER=$(npm version patch)
+git push origin HEAD
+echo $SHEEP_VER
+cd ../
+echo 'Done versioning sheep'
+echo 'Copying app...'
+cp -R sheep/ build/tmp/
+echo 'Done copying app'
+echo 'Uglifying...'
+./paastor/node_modules/.bin/uglifyjs -mt -o build/tmp/api.js -v build/tmp/api.js
+./paastor/node_modules/.bin/uglifyjs -mt -o build/tmp/proxy.js -v build/tmp/proxy.js
+echo 'Done uglifying'
+echo 'Creating archive...'
+currentSheep="./build/tmp/sheep-$SHEEP_VER.zip"
+latestSheep="./build/tmp/sheep.zip"
+
+zip -r -q $latestSheep ./build/tmp/
+cp $latestSheep $currentSheep
+echo 'Done archiving'
+
+echo 'Success'

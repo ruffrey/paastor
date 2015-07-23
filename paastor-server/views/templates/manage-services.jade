@@ -1,0 +1,75 @@
+.alert.alert-warning(ng-show="hasNoCard")
+    h3.white
+        i.fa.fa-credit-card
+        | &nbsp;&nbsp;
+        | It looks like you don't have a credit card on file.
+        | &nbsp;&nbsp;
+        a.btn.btn-warning.pull-right(href="/#/account") Add a card
+
+.row
+    .col-sm-6
+        h3 Upgrade Services
+        p These are the subscriptions available for purchase.
+        p Purchases are immediately charged to the credit card on file. Your service limit
+            |  will be raised instantly.
+
+        table.table.table-responsive
+            thead
+                tr
+                    th Plan
+                    th Price
+                    th Qty
+                    th
+            tbody
+                tr(ng-repeat="plan in plans" ng-init="plan.quantity = 0")
+                    td: h6 {{ plan.name }}
+                    td: h6 {{ (plan.amount * Math.floor(plan.quantity)) / 100 | currency }}
+                        | per {{ plan.interval }}
+                    td.col-xs-5
+                        .input-group(ng-show="!hasNoCard")
+                            input.form-control.input-xs.right(type="number" min="0" step="1" ng-model="plan.quantity" placeholder="Qty")
+                            span.input-group-btn
+                                button.btn.btn-primary(ng-click="addService(plan)") Buy
+                        a.btn.btn-primary(href="/#/account" ng-show="hasNoCard") Add Card
+
+        .alert.alert-info.center(ng-show="buyMsg") {{ buyMsg }}
+
+        p.help-block More services coming soon.
+
+    .col-sm-6
+        .well
+            h4 Current services
+            p Your account has the following service limits:
+            p
+                img.img-1x(src="/favicon.png")
+                | &nbsp;&nbsp;
+                | {{ account.limit_servers }} {{ account.limit_servers === 1 ? " server" : " servers" }}
+                | &nbsp; (1 free)
+
+        .well
+            h4 Manage my subscriptions
+            span.help-block(ng-show="!subscriptions.length") none
+            table.table.table-responsive
+                tbody
+                    tr(ng-repeat="sub in subscriptions" ng-init="showDowngrade = false; sub.down = 0")
+                        td {{ sub.quantity }}
+                        td {{ sub.plan.name }}
+                        td {{ sub.plan.amount * sub.quantity / 100 | currency }} per {{ sub.plan.interval }}
+                        td(ng-show="sub.quantity && !showDowngrade")
+                            button.btn.btn-warning.btn-xs(ng-click="showDowngrade = true")
+                                i.fa.fa-level-down
+                        td.col-xs-7(ng-show="sub.quantity && showDowngrade")
+                            | How many?
+                            .input-group
+                                input.form-control.input-xs(type="number" min="0" max="{{ sub.quantity }}" step="1" ng-model="sub.down" placeholder="Qty")
+                                span.input-group-btn
+                                    button.btn.btn-danger(ng-click="downgrade(sub)") Remove
+                            br
+                            button.btn.btn-default.btn-xs(ng-click="showDowngrade = false; sub.down = 0;") Cancel
+
+            .alert.alert-block.alert-info.center(ng-show="subMsg") {{ subMsg }}
+
+            p.help-block
+                strong Warning
+                br
+                | Service downgrades will be applied immediately and any paid credits will be lost.

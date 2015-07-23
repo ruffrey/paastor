@@ -1,0 +1,69 @@
+body {
+      padding: 13px 21px;
+}
+
+.container {
+    max-width: 800px;
+    font-size: 16px;
+}
+
+.left {
+    text-align: left;
+}
+.right {
+    text-align: right;
+}
+.center {
+    text-align: center;
+}
+
+.smaller {
+    font-size: .8em;
+}
+
+.wrapall {
+    word-break: break-word;
+}
+
+.monospace {
+    font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+#footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 8px 13px 0 13px;
+    background: #fff;
+    box-shadow: 1px 2px 10px rgba(0,0,0,.5);
+    z-index: 200;
+}
+
+/* image sizing to match fa-* */
+img.img-1x {
+    margin-top: -4px;
+    width: 16px;
+    height: 16px;
+}
+img.img-2x {
+    margin-top: -4px;
+    width: 30px;
+    height: 30px;
+}
+img.img-3x {
+    width: 51px;
+    height: 51px;
+}
+.storage-panel {
+    margin: 0 3% 6px 3%;
+    padding: 1px 20px
+}

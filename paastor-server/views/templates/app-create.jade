@@ -1,0 +1,86 @@
+h5: a(ng-href="/#/vps/{{ app.vps }}" ng-show="!done && !saving") 
+    i.fa.fa-angle-left
+    |  {{ app.vps }}
+div(ng-show="!done && !saving")
+
+    h1 Add an App
+
+.alert.alert-info(ng-show="message && !done") {{ message }}
+div(ng-show="!done && !saving")
+
+    .row
+        .col-sm-5
+            h3 Required information
+            br
+            label Application name (_id)
+            span.help-block Only letters, numbers, and dashes (-) allowed.
+            input.form-control(type="text" ng-disabled="saving" ng-model="app._id" placeholder="my-app")
+
+            br
+            br
+            label Application environment
+            span.help-block Must be a JSON object.
+            textarea.form-control.monospace(rows="4" ng-disabled="saving" ng-model="app.env" 
+                placeholder="{\n    \"NODE_ENV\": \"production\"\n}"
+            )
+    
+        .col-sm-6.col-sm-offset-1
+            h3 SSL options
+                i.fa.pull-right(ng-class="{ 'fa-lock': showssl, 'fa-unlock': !showssl  }")
+                span(ng-show="account.limit_servers > 1")
+                    button.btn.btn-success.btn-xs(ng-click="showssl = true" ng-show="!showssl") Show
+                    button.btn.btn-info.btn-xs(ng-click="showssl = false" ng-show="showssl") Hide
+            p(ng-show="account.limit_servers < 2") 
+                a(href="/#/manage-services") Get on a paid account to enable SSL.
+                |  Having a paid account will allow you to upload SSL certificates.
+
+            div(ng-show="showssl")
+                br
+                include ../parts/ssl
+            
+            br
+            br
+
+            .row
+                .col-xs-12.right
+                    button.btn.btn-primary.btn-lg(ng-click="save()" ng-disabled="saving") Create application
+                    span.help-block on server 
+                        strong {{ app.vps }}
+
+
+    br
+div(ng-show="saving")
+    i.fa.fa-circle-o-notch.fa-spin.fa-4x
+    br
+    br
+
+div(ng-show="done")
+    h1 Done
+
+    p Apps must have a 
+        code package.json
+        | &nbsp;file with a main script, at least one domain specified, and a node version.
+    pre: code {
+        |     // a single startup script
+        |     "main": "aStartupScript.js",
+        |  
+        |     // list of domains for the Sheep proxy router
+        |     "domains": ["example.com", "www.example.com"],
+        |  
+        |     "engines": {
+        |         // a single node version - no ranges
+        |         "node": "0.10.31"
+        |     }
+        | }
+    
+    p To push code:
+    pre(style="width: 300px"): code $  npm install -g paastor
+        | $  pstr push [server] [app]
+    br
+
+    a.btn.btn-primary(ng-href="/#/vps/{{ app.vps }}") Ok
+    br
+
+
+br
+br

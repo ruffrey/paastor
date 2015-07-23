@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html ng-app="paastor">
+  <head>
+    <title>FAQ - Paastor for Node.js</title>
+    <title>Paastor for Node.js</title>
+    <meta charset="utf8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="nodejs, paas, deployment, production, forever">
+    <meta name="description" content="Deploy and keep up Node.js apps, MongoDB and Redis, on your own server.">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="/favicon.png">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/bootstrap-lgr.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular-resource.min.js"></script>
+    <script src="https://js.stripe.com/v2/"></script>
+    <script src="/build/js/app.js"></script>
+  </head>
+  <body ng-controller="NavController">
+    <div class="container">
+      <h1>Frequently Asked Questions</h1>
+      <h2>(FAQ)</h2><br>
+      <h3 id="save-root-password">Why do you need my root password?</h3>
+      <p>
+        Your root password enables Paastor to securely log into your server and install all of the
+        dependencies required to run a Node.js app, MongoDB, or Redis. Things like opening ports
+        and installing packages need to be done as root.
+      </p><br>
+      <h3 id="root-trust">Can I trust you with my root password?</h3>
+      <p>
+        Yes, but technically you don't need to. As soon as Paastor does it's thing, you can change
+        your root password, if it makes you feel better. However,<strong>Paastor does not store your root password</strong>.
+      </p>
+      <p>It may help to know:</p>
+      <ul>
+        <li>The root password is transferred to Paastor over https.</li>
+        <li>It is used for logging into the server via SSH and necessary to install the Sheep service.</li>
+        <li>It is not saved in a database anywhere, even temporarily, and Paastor does not output the password to log files.</li>
+        <li>Because it is not saved, you must re-enter your root password to make substantial changes on the server - like installing MongoDB, or upgrading Sheep. This also highlights that Sheep and your apps do not run as root (best practice), and cannot perform these root tasks.</li>
+      </ul><br>
+      <h3 id="run-as-root">Will my apps run as root?</h3>
+      <p>No, they run as a forever-monitor subprocess of Sheep, which is spawned by forever (-g).</p><br>
+      <h3 id="detect-ssl">How do I detect if a request was HTTPS or HTTP</h3>
+      <p>
+        Since HTTPS traffic to your apps (if you're using SSL) will come through a proxy,
+         it will not appear to be secure from your application's perspective.
+      </p>
+      <p>To detect HTTPS behind the Sheep proxy, look at the<code>referrer</code> header.</p>
+      <pre><code>referrer: https://www.example.com</code></pre><br>
+    </div><br><br><br><br><br><br><br>
+    <div id="footer">
+      <div class="row">
+        <div ng-show="!account.email" class="col-xs-4"><span class="help-block"><strong><a href="/">Paastor</a></strong>&nbsp;&nbsp;<span class="hidden-xs"><small> A PaaS-like experience with your own servers.</small></span></span></div>
+        <div ng-show="account.email" class="col-xs-4"><span class="help-block"><a href="/#/list"><strong><span class="hidden-xs">Paastor</span>  Server Manager</strong></a></span></div>
+        <div class="col-xs-4 center"><span class="help-block"><a href="/pages/vision.html">About</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/pages/docs.html">Docs</a></span></div>
+        <div class="col-xs-4 right"><span ng-show="account.email" class="help-block"><small class="hidden-xs"><small>{{ account.email }}</small></small>&nbsp;&nbsp;<a href="javascript:void(0)" ng-click="logout()" class="btn btn-xs btn-default">Sign Out</a></span></div>
+      </div>
+    </div>
+    <script async>
+      if (document.location.hostname === 'paastor.com') {
+          if (document.location.protocol === 'http:') {
+              window.open(document.location.href.replace('http:', 'https:'), '_self');
+          }
+          // google analytics
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      
+          ga('create', 'UA-54875912-1', 'auto');
+          ga('send', 'pageview');
+      }
+    </script>
+  </body>
+</html>

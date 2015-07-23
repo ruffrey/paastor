@@ -1,0 +1,50 @@
+extends ../layout
+
+block append vars
+    - title = "Changelog";
+
+block content
+    .container
+        h1 Changelog
+        
+        p Changes to Paastor will be displayed here.
+        
+        h3 2014-11-12 Create app from CLI
+        p New CLI command:
+        pre: code pstr create-app [server] [app]
+        
+        br
+        h3 2014-10-18
+        h4 CLI open sourced
+        p Improved CLI performance and bug fixes. The CLI tool 
+            code pstr
+            |  is now 
+            a(href="https://github.com/paastor/paastor")  open source on Github.
+        p An alpha version of a library now exists, when `npm install paastor` is run without the 
+            |  `-g` global option.
+        br
+        h3 2014-09-21
+        h4 MongoDB
+        p Paastor now supports an experimental service allowing you to install MongoDB in one step.
+        p MongoDB can be setup for remote connections or local-only access.
+        br
+
+        h3 2014-09-16
+        h4 Redis
+        p Paastor now supports an experimental service allowing you to install Redis in one step.
+        p Redis can be setup for remote connections or local-only access.
+
+        br
+        
+        h3 2014-09-11
+        h4 CLI tool renamed
+        p 
+            code $   paastor [commands]
+            |  and the npm package 
+            code paastor-cli
+            |  have been renamed.
+        p Now install with
+        pre: code $   npm install -g paastor
+        p and use the CLI like
+        pre: code $   pstr [commands]
+        

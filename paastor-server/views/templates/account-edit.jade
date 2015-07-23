@@ -1,0 +1,49 @@
+h3 My Account
+br
+.row
+    .col-sm-4.col-sm-offset-1
+        h4 Email
+        span.help-block {{ account.email }}
+        br
+hr
+.alert.alert-info.center(ng-show="message") {{ message }}
+.row
+    .col-sm-6.col-sm-offset-1
+        h4 Credit card
+        span.help-block Current:
+            span(ng-show="!card.last4") none
+            span(ng-show="card.last4") {{ card.type }} \#{{ card.last4 }}
+        button.btn.btn-xs.btn-primary(ng-show="!changeCard" ng-click="changeCard = true") Update Card
+        .well(ng-show="changeCard")
+            h4 Update credit card
+            br
+            input.form-control(type="text" placeholder="Card number" ng-model="newCard.number")
+            br
+            input.form-control(type="text" placeholder="Cardholder name" ng-model="newCard.name")
+            br
+            input.form-control(type="text" placeholder="CVC security code" ng-model="newCard.cvc")
+            br
+            .form-inline
+                .form-group.col-xs-6
+                    input.form-control(
+                        type="text"
+                        placeholder="Month"
+                        ng-model="newCard.exp_month"
+                    )
+                .form-group.col-xs-6
+                    input.form-control(
+                        type="text"
+                        placeholder="Year"
+                        ng-model="newCard.exp_year"
+                    )
+            br
+            br
+            br
+            button.btn.btn-primary.btn-sm(ng-click="setCard()") Set as billing card
+    .col-sm-3.col-sm-offset-1
+        h4 Password
+        input.form-control(type="password" placeholder="New password" ng-model="password")
+        br
+        input.form-control(type="password" placeholder="Confirm password" ng-model="passwordConf")
+        br
+        button.btn.btn-danger.btn-xs(ng-click="changePassword()") Change password

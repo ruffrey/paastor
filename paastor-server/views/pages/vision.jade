@@ -1,0 +1,41 @@
+extends ../layout
+
+block append vars
+    - title = "About Paastor: solving the Node.js production deployment problem";
+    - meta.keywords = "vps, " + meta.keywords
+
+block content
+    .container
+        h1 About Paastor
+
+        h5: a(href="/pages/contact.html") Support / Contact Information
+        h5: a(href="/pages/terms.html") Terms of Service and Acceptable Use
+        
+        br
+
+        h2 The Paastor Vision
+        br
+        h2 Node.js is awesome, but there's a problem:
+        h5 Setting up Node in production is a time suck.
+        h5 PaaS services make it easy - but they're expensive and locked down, and that won't work
+            | for everyone.
+
+        br
+        
+        h2 Paastor solves the problem.
+        
+        h3 Virtual servers are super cheap. So with your virtual server, you can:
+
+        h5 1. Provision a Node.js-capable production server in one step.
+        h5 2. Deploy apps from the CLI in one step.
+        h5 3. Keep apps up and restart them automatically when they die.
+        h5 4. Use web sockets.
+        h5 5. Host multiple Node apps, with multiple Node versions, on the same box.
+        h5 6. Use your own SSL certificates.
+        h5 7. Use your own domain.
+        h5 8. Retain full control of your server.
+
+        h3 with the added bonus of:
+        h5 One-click Redis setup
+        h5 One-click MongoDB setup
+    

@@ -1,0 +1,139 @@
+.alert.alert-info.center(ng-show="message") {{ message }}
+
+.row
+
+    .col-md-4
+        div(ng-show="!account.email")
+            h1 Paastor
+            h3 Sign up
+            input.form-control(type="text" placeholder="email" ng-model="signup.email")
+            br
+            input.form-control(type="password" placeholder="password" ng-model="signup.password")
+            br
+            p: a(href="/pages/terms.html" target="_blank") Terms
+            button.btn.btn-success(ng-click="register()") Accept terms and create account
+            br
+            br
+    .col-md-4
+        h5.center Deploy Node.js apps to your own servers in one line, and keep them running if they crash.
+        pre: code $    pstr push [server] [app]
+        
+        .panel(style='padding: 20px')
+            p For a limited time, your
+            h5.center: strong FIRST SERVER IS FREE
+            p then just
+            h2.center $0.99 / mo
+            h5.center including SSL, MongoDB, and Redis
+    .col-md-4(ng-show="!account.email")
+
+        h4 Sign in
+        input.form-control(type="text" placeholder="email" ng-model="signin.email" pa-enter="login()")
+        br
+        input.form-control(type="password" placeholder="password" ng-model="signin.password" pa-enter="login()")
+        br
+        button.btn.btn-primary(ng-click="login()") Sign in
+        a.pull-right(href="javascript:void(0)" ng-click="forgot()") Forgot password
+
+br
+br
+.container.center
+    h4 After deploying your apps from the CLI, manage them on the server dashboard.
+
+.row
+
+    .col-md-4
+
+        h6 List servers
+        pre: code $   pstr servers
+        
+        h6 See apps and details
+        pre: code $   pstr server my-server
+        
+        h6 Get server or app logs
+        pre: code $   pstr logs my-server myapp
+        
+        h6 Stop an app
+        pre: code $   pstr stop my-server myapp
+        
+        h6 Start an app
+        pre: code $   pstr start my-server myapp
+        
+        h6 Use more than one version of Node.js
+        pre: code $   pstr install-node my-server 0.10.31
+        
+        h6 Push code
+        pre: code $   pstr push my-server myapp
+        
+        h6: a(href="/pages/docs.html") and more...
+    .col-md-8
+        br
+        a(href="/dash.png" target="_blank"): img.img-responsive.img-thumbnail(src="/dash.png")
+
+br
+br
+.row
+    .col-md-8
+        a(href="/sman.png" target="_blank"): img.img-responsive.img-thumbnail(src="/sman.png")
+    .col-md-4
+        h3 See servers in one spot
+        h5 All of your infrastructure united.
+        h5 Restart apps, set environment variables, and install Mongo or Redis in a jiffy.
+
+br
+br
+h3 Features
+.row
+    .col-md-4
+        h5
+            i.fa.fa-check
+            |  Easy and fast CLI deployments
+        h5
+            i.fa.fa-check
+            |  Web sockets
+        h5
+            i.fa.fa-check
+            |  Clustering
+        h5
+            i.fa.fa-check
+            |  Use any server host
+        h5
+            i.fa.fa-check
+            |  No lock-in
+        h5
+            i.fa.fa-check
+            |  Highly affordable
+    .col-md-4
+        h5
+            i.fa.fa-check
+            |  Deploy MongoDB in one step
+        h5
+            i.fa.fa-check
+            |  Deploy Redis in one step
+        h5
+            i.fa.fa-check
+            |  Unlimited apps per server
+        h5
+            i.fa.fa-check
+            |  Multiple versions of Node.js per server
+        h5
+            i.fa.fa-check
+            |  Use your own SSL certificates
+    .col-md-4
+        h5
+            i.fa.fa-check
+            |  Install SSL in one step
+        h5
+            i.fa.fa-check
+            |  No scripts to manage
+        h5
+            i.fa.fa-check
+            |  Easily track apps and servers on different infrastructures
+        h5
+            i.fa.fa-check
+            |  No learning curve
+        h5
+            i.fa.fa-check
+            |  Apps are restarted when they crash
+
+
+br

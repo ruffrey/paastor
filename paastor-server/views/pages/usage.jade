@@ -1,0 +1,130 @@
+extends ../layout
+
+block append vars
+    - title = "Usage guide: fast and easy deployment of Node.js apps";
+
+block content
+    .container
+        h1 Usage
+        h2 How to deploy a node app to your own infrastructure in 5 minutes using Paastor
+        h4 Deploy to cloud servers, VPS, dedicated servers, and more.
+        br
+        img.img-responsive(src="/diagram.png")
+        br
+        h3 1. Sign up
+        p
+            strong Begin by creating an account
+            | and verifying your email address.
+
+        br
+        h3 2. Obtain a server
+        p The most common option is to purchase a VPS (virtual private server) plan from a hosting company. In many
+            | cases you can run multiple Node.js apps for $2 - $10 per month on a VPS.
+        p VPS hosting is very competitive and very cheap compared to cloud hosting. Examples of hosting companies are: Linode, Digital Ocean, Chicago VPS, and many more.
+            a(href="http://serverbear.com" target="_blank") Server Bear
+            | &nbsp;and&nbsp;
+            a(href="http://lowendbox.com" target="_blank") LowEndBox
+            |  are tools to help you compare VPS hosts. (Paastor is not affiliated with any of the services
+            |  mentioned.)
+        p The only officially supported server OS on Paastor (for now) is
+            strong Ubuntu 14.04.
+        p Next, be sure to create a DNS "A" record with your DNS provider, and point to your server's IP address, for the domain you intend to serve.
+
+
+        br
+        h3 3. Add your server to Paastor
+        p Log in to Paastor and press the 'New Server' button from the Server Manager screen.
+            |  Fill out all the fields. This will install the Sheep service on your server and
+            |  allow you to push apps to the server.
+
+        br
+        h3 4. Create an app on the server in Paastor
+        p From the Paastor UI, add an app to your server. You must add an app from the UI before pushing code.
+        p Your
+            code package.json
+            |  must have the following fields (these are example values):
+
+        pre: code {
+            |     // a single startup script
+            |     "main": "aStartupScript.js",
+            |     // list of domains for the Sheep proxy router
+            |     "domains": ["example.com", "www.example.com"],
+            |     "engines": {
+            |         // a single node version - no ranges
+            |         "node": "0.10.31"
+            |     }
+            | }
+
+
+
+        br
+        h3 5. Install the
+            code pstr
+            |  command line tool
+        pre: code $  npm install -g paastor
+
+
+        br
+        h3 6. Log in on the CLI
+        pre: code $   pstr login
+
+
+        br
+        h3 7. (optional) Install the right version of Node for your app
+        p Use
+            code pstr install-node [server] [version]
+            |  to add a version of Node to your server.
+        pre: code $   pstr install-node myserver1 0.10.28
+        p Depending on the version, it may be installed quickly, or may need to compile from source.
+
+
+        br
+        h3 8. Push your application
+        p Use
+            code pstr push [server] [app]
+            |   to push the app in the current directory to the specified server.
+
+        pre: code $  pstr push myserver1 someapp
+        pre: code push myserver1 someapp
+            |    Checking package.json
+            |      package.json exists
+            |      version ok 0.10.28
+            |      Domains look ok
+            |    Checking server...
+            |      Found myserver
+            |      Status ok
+            |      0.10.31 installed
+            |    Creating package from current directory...
+            |      Package created. 10.46mb
+            |    Prepping package for sending...
+            |      Package is ready to send.
+            |    Uploading and installing...
+            |      Ok
+            |    Stopping app...
+            |      Stopped.
+            |    Starting app...
+            |      Started
+            |    Cleaning up package...
+            |      Package cleaned.
+            |    Push complete.
+
+        br
+
+        h3 9. (optional) Check the logs
+        h5 Server logs
+        pre: code $  pstr logs myserver1
+        h5 Application logs
+        pre: code $  pstr logs myserver1 someapp
+
+        br
+        h3 Help
+        p All CLI commands can be seen by running
+            code pstr --help
+            | .
+
+        br
+        h3 Open source
+        p It's on the roadmap to release many parts of Paastor under an open source license.
+        p Until then, refer to the
+            a(href="/pages/docs.html#system") documentation
+            |  about the files Paastor puts on your server.

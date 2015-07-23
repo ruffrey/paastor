@@ -1,0 +1,22 @@
+p To enable HTTPS, paste in the contents of the certification files. SSL data will only be 
+    | saved on your server - not on Paastor.
+p Depending on your setup, you will likely also use the SSL certificate in your application HTTP server.
+    | Setting the information here allows the Sheep instance to proxy requests to your app.
+label Private key (mydomain.key)
+textarea.form-control(ng-disabled="saving" ng-model="app.key" rows="3" 
+    placeholder="-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----")
+br
+label Key password
+span.help-block Only necessary if you used a password when creating the key.
+input.form-control(type="password" ng-disabled="saving" ng-model="app.passphrase" 
+    placeholder="********")
+br
+label Private cert (mydomain.crt)
+textarea.form-control(type="text" ng-disabled="saving" ng-model="app.cert" rows="3" 
+    placeholder="-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----")
+br
+
+label Certificate Authority (CA) cert - optional (bundle.crt)
+span.help-block This may include multiple CA certificates. Paste them all here.
+textarea.form-control(type="text" ng-disabled="saving" ng-model="app.ca" rows="6" 
+    placeholder="-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----")

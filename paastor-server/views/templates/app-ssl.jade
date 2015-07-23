@@ -1,0 +1,47 @@
+h5: a(ng-href="/#/vps/{{ app.vps }}" ng-show="!done && !saving") 
+    i.fa.fa-angle-left
+    |  {{ app.vps }}
+div(ng-show="!done && !saving")
+
+    h1 SSL for {{ app._id }}
+
+.alert.alert-info(ng-show="message && !done") {{ message }}
+div(ng-show="!done && !saving")
+    
+    p(ng-show="account.limit_servers < 2") 
+        a(href="/#/manage-services") Get on a paid account to enable SSL.
+        |  Having a paid account will allow you to upload SSL certificates.
+
+    div(ng-show="account.limit_servers > 1")
+        include ../parts/ssl
+    
+        br
+        br
+
+        .row
+            .col-xs-12.right
+                button.btn.btn-primary.btn-lg(ng-click="save()" ng-disabled="saving") Set SSL
+                span.help-block on server 
+                    strong {{ app.vps }}
+                    |  for app 
+                    strong  {{ app._id }}
+
+
+    br
+div(ng-show="saving")
+    i.fa.fa-circle-o-notch.fa-spin.fa-4x
+    br
+    br
+
+div(ng-show="done")
+    h1 Done
+
+    .alert.alert-success
+        i.fa.fa-info-circle
+        | &nbsp;&nbsp;The app must be restarted for changes to take effect.
+    a.btn.btn-primary(ng-href="/#/vps/{{ app.vps }}") Ok
+    br
+
+
+br
+br

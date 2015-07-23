@@ -1,0 +1,16 @@
+{
+    "node": true,
+    "curly": true,
+    "undef": true,
+    "unused": false,
+    "trailing": true,
+    "strict": true,
+    "laxbreak": true,
+    "laxcomma": true,
+    "mocha": true,
+    "predef": [
+        "-Promise",
+        "xit",
+        "xdescribe"
+    ]
+}

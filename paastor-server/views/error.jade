@@ -1,0 +1,7 @@
+extends layout
+
+block content
+  h1= message || error.message || 'The page you are trying to reach was not found.'
+  h2= error.status
+  if (process.env.NODE_ENV !== 'production')
+      pre #{error.stack}

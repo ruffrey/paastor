@@ -1,0 +1,84 @@
+extends ../layout
+
+block append vars
+      - title = "pstr, the Paastor command line deployment tool";
+
+block content
+      .container
+      
+            h1
+                  code pstr
+                  |  - the Paastor CLI tool
+            
+            h3 Installation
+            pre: code $   npm install -g paastor
+            
+            h3 List of commands
+            pre: code $   pstr --help
+                  |   
+                  | Usage: pstr [options] [command]
+                  | 
+                  | Commands:
+                  | 
+                  | login [options] 
+                  |   Sign into Paastor (prompts for credentials or use -u, --user and -p, --pass)
+                  | 
+                  | logout 
+                  |   Sign out of Paastor
+                  | 
+                  | servers 
+                  |   Get a list of servers for this account
+                  | 
+                  | logs [server] [app]
+                  |   Get the logs for a server (when no app param) or an app on the server
+                  | 
+                  | server [_id]
+                  |   Get detailed info about a server
+                  | 
+                  | push [options] [server] [app]
+                  |   Push an app to your server (both must already exist)
+                  | 
+                  | create-app [server] [app]
+                  |   Create an app
+                  | 
+                  | stop [server] [app]
+                  |   Stop an app
+                  | 
+                  | start [server] [app]
+                  |   Start an app
+                  | 
+                  | restart [server] [app]
+                  |   Stop then immediately start an app
+                  | 
+                  | setenv [server] [app]
+                  |   Initiate the process of setting an app environment variable (must restart app to take effect)
+                  | 
+                  | install-node [server] [version]
+                  |   Trigger the installation of a version of Node.js, to be available to apps.
+                  | 
+                  | 
+                  | Options:
+                  | 
+                  |   -h, --help     output usage information
+                  |   -V, --version  output the version number
+                  | 
+                  | 
+                  | 
+            
+            h3#no-npm Disabling NPM install
+            p Sometimes you might has special packages or other reasons for wanting to disable 
+                  code npm install
+                  | .
+            p When you use the 
+                  code pstr push [server] [app]
+                  |  command, Sheep will attempt to run 
+                  code npm install
+                  |  using the version of Node specified in your 
+                  code package.json
+                  |  
+                  code engines.node
+                  | .
+            p This can be turned off with the 
+                  code --no-npm
+                  |  flag.
+            pre: code $   pstr push myserver myapp --no-npm

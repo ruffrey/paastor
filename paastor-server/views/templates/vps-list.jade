@@ -1,0 +1,41 @@
+.alert.alert-info.center(ng-show="message") {{ message }}
+
+.btn-group.pull-right
+    a.btn.btn-xs.btn-default(href="/#/account") My Account
+    a.btn.btn-xs.btn-default(href="/#/manage-services") My Subscriptions
+
+br.visible-xs
+
+h3 Paastor Server Manager
+
+a.btn.btn-primary.btn-sm(href="/#/vps"
+    ng-show="vpses && vpses.length < account.limit_servers") New server
+a.btn.btn-primary.btn-sm(href="/#/manage-services"
+    ng-show="vpses && vpses.length >= account.limit_servers") Upgrade plan to add servers
+br
+span.help-block(ng-show="!vpses"): i.fa.fa-5x.fa-circle-o-notch.fa-spin
+br
+
+table.table.table-striped.table-hover(ng-show="vpses")
+    thead: tr
+        th Server
+        th Infrastructure
+        th IP
+        th Redis
+        th MongoDB
+    tbody
+        tr.clickable(ng-repeat="vps in vpses" ng-click="$location.path('/vps/' + vps._id)")
+            td: a(ng-href="/#/vps/{{ vps._id }}") {{ vps._id }}
+            td {{ vps.infrastructure }}
+            td {{ vps.ip }}
+
+            td: a.btn.btn-default.btn-sm(ng-href="/#/vps/{{ vps._id }}/redis")
+                i.fa.fa-check-square-o(ng-if="vps.redis")
+                i.fa.fa-square-o(ng-if="!vps.redis")
+
+            td: a.btn.btn-default.btn-sm(ng-href="/#/vps/{{ vps._id }}/mongo")
+                i.fa.fa-check-square-o(ng-if="vps.mongo")
+                i.fa.fa-square-o(ng-if="!vps.mongo")
+
+span.help-block.center(ng-show="!vpses.length")
+    em You have not added any servers yet.

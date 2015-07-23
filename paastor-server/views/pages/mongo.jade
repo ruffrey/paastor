@@ -1,0 +1,56 @@
+extends ../layout
+
+block append vars
+    - title = "Super fast MongoDB installation";
+
+block content
+    .container
+        h1 MongoDB on Paastor
+        
+        p Paastor now supports simple MongoDB deployments. With a few clicks, you can have MongoDB running on any of your servers.
+
+        p From the Server Manager, hit the MongoDB checkbox for one of your servers and fill out the required 
+            |  fields. Take note of any security information you set - it will not be saved by Paastor. In 
+            |  a few moments, it will be installed and you will be ready to connect.
+
+        h3 Remote access to MongoDB
+        p Often people use MongoDB in a trusted environment and do not allow it to receive remote connections.
+        P If you opt for remote access, be aware of how to connect, and that it 
+            strong may be slightly different 
+            |  than connecting to local or cloud based MongoDB services. This is because local and 
+            |  cloud systems shield you from some of the normal MongoDB administration, and create 
+            |  granular permissions at the database level.
+        p
+            strong Paastor creates an admin user which you can use to connect to any database,
+            |  and create new users for those databases.
+
+        p 
+            strong However,
+            |  you must specify that you are connecting as an admin user. This is because 
+            |  MongoDB stores database permissions inside each database. 
+       
+        p You must tell MongoDB that your  
+            code authSource
+            |  is 
+            code admin
+            | .
+        
+        h6.help-block Querystring method
+        pre: code var mongoose = require('mongoose');
+            | 
+            | var mongoUri = "mongodb://username:password@3.3.3.3:27017/somedatabase?authSource=admin";
+            | mongoose.connect(mongoUri);
+        
+        h6.help-block Options object method
+        
+        pre: code var mongoose = require('mongoose');
+            | 
+            | var mongoUri = "mongodb://username:password@3.3.3.3:27017/somedatabase";
+            | var options = {
+            |       auth: { authSource: 'admin' }
+            | };
+            | mongoose.connect(mongoUri, options);
+        
+        br
+        h3 Creating a MongoDB database
+        p New databases are created immediately when you connect to them. There is no need to create one.

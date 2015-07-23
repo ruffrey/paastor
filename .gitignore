@@ -1,0 +1,22 @@
+*.log
+
+# Paastor
+node_modules
+
+# Paastor tests
+paastor-server/spec/vps-credentials.json
+paastor-server/spec/paastor-credentials.json
+
+
+# Sheep
+# do not ignore node_modules, at this point
+sheep/system.json
+build/
+sheep_apps/
+sheep_logs/
+sheep.cert
+sheep.key
+
+
+# CLI
+cli/node_modules/

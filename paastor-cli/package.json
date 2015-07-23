@@ -1,0 +1,33 @@
+{
+  "name": "paastor",
+  "version": "0.4.7",
+  "homepage": "https://paastor.com",
+  "description": "CLI and Library for managing your Paastor servers and deploy apps.",
+  "main": "client.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "preferGlobal": true,
+  "bin": {
+    "pstr": "./cli.js"
+  },
+  "author": "hello@paastor.com",
+  "license": "MIT",
+  "respository": {
+    "type": "git",
+    "url": "https://github.com/paastor/paastor"
+  },
+  "bugs": {
+    "url": "http://github.com/paastor/paastor/issues"
+  },
+  "dependencies": {
+    "archiver": "~0.11.0",
+    "async": "~0.9.0",
+    "cli-table": "~0.3.0",
+    "colors": "~0.6.2",
+    "commander": "~2.3.0",
+    "promptly": "~0.2.0",
+    "request": "~2.42.0",
+    "semver": "~3.0.1"
+  }
+}

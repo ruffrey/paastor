@@ -1,0 +1,134 @@
+h4(ng-show="!loading"): a(ng-href="/#/list") 
+        i.fa.fa-angle-left
+        |  &nbsp;servers
+
+h1(ng-show="loading && message") {{ message }}
+
+span.help-block(ng-show="!vps || loading"): i.fa.fa-circle-o-notch.fa-spin.fa-4x
+
+
+div(ng-show="vps && !vps.redis && !loading && !removed && !installed")
+    h1 Install Redis
+    h5 (experimental)
+    .alert.alert-info.center(ng-show="message") {{ message }}
+    
+    br
+    .row
+
+        .col-sm-6
+            label Access
+            span.help-block Redis can be installed just for local apps on the server, 
+                |  or it can be made available to apps on other servers, too.
+            .btn-group
+                button.btn.btn-sm(ng-click="redis.localOnly = true" 
+                    ng-class="{ 'active btn-success': redis.localOnly, 'btn-default': !redis.localOnly }")
+                    | Local access only
+                button.btn.btn-sm(ng-click="redis.localOnly = false" 
+                    ng-class="{ 'active btn-warning': !redis.localOnly && !redis.noPassword, 'btn-default': redis.localOnly, 'active btn-danger': redis.noPassword && !redis.localOnly }")
+                    | Enable remote access
+        .col-sm-6
+            label Port
+            span.help-block By default, Redis runs on port 
+                strong 6379
+                | . It is recommended to change 
+                | the default port if you plan to expose Redis
+                | to remote connections.
+            .input-group
+                input.form-control(type="number" step="1" ng-model="redis.port" placeholder="6379")
+                .input-group-btn
+                    button.btn.btn-default(ng-click="portgen()") Port 
+                        i.fa.fa-refresh
+    br
+    .row
+        .col-sm-6
+            label Redis Password
+            span.help-block By default, Redis has no password because 
+                | it is intended for use in trusted environments. 
+                | When setting a password, you may use a random system-generated
+                | password (recommended), or set your own custom password. 
+                strong Paastor will not save the password
+                | .
+
+            .btn-group
+
+                button.btn.btn-sm(ng-click="redis.noPassword = true; redis.generatePassword = false; redis.password = '';" 
+                    ng-class="{ 'active btn-warning': redis.noPassword && redis.localOnly, 'btn-default': !redis.noPassword, 'active btn-danger': redis.noPassword && !redis.localOnly }")
+                    | No password
+
+                button.btn.btn-sm(ng-click="redis.generatePassword = true; redis.noPassword = false; redis.password = '';" 
+                    ng-class="{ 'active btn-success': redis.generatePassword && !redis.noPassword, 'btn-default': !redis.generatePassword || redis.noPassword }")
+                    | System generated
+
+                button.btn.btn-sm(ng-click="redis.generatePassword = false; redis.noPassword = false; redis.password = '';" 
+                    ng-class="{ 'active btn-warning': !redis.generatePassword && !redis.noPassword, 'btn-default': redis.generatePassword || redis.noPassword }")
+                    | Custom
+            span.help-block(ng-show="!redis.noPassword && !redis.generatePassword")
+                | Passwords may be alphanumeric and include underscore or dash.
+            input.form-control(type="text" ng-model="redis.password" 
+                maxlength="512" placeholder="Long and secure Redis password"
+                ng-show="!redis.noPassword && !redis.generatePassword")
+        .col-sm-6
+            label Root Password
+            span.help-block For installation. This will not be saved by Paastor.
+            input.form-control(type="password" ng-model="redis.rootPassword" placeholder="**********")
+            
+            br
+            
+            .alert.alert-danger.animated.pulse(
+                ng-show="redis.noPassword && !redis.localOnly"
+            )
+                i.fa.fa-warning
+                | &nbsp;&nbsp;You are about to install a remotely accessible Redis instance
+                | with no password. 
+                span(ng-show="redis.port == 6379") It is also on the default port. 
+                | Is that correct?
+            div.pull-right.right
+                button.btn.btn-primary(ng-click="install()") Install and reboot
+                span.help-block on server 
+                    strong {{ vps._id }}
+
+div(ng-show="installed")
+    h1 Redis was installed
+    .alert.alert-info.center(ng-show="message") {{ message }}
+    
+    p Take note of the password and port. 
+        strong Paastor does not store these, for security reasons.
+    
+    p If you forget the password or port, you can log into the server and check the 
+        code /etc/redis/redis.conf
+        |  file.
+    br
+
+    h6.help-block port
+    h5 {{ redis.port }}
+    br
+    h6.help-block password
+    .row(ng-show="redis.password"): .col-md-4
+        textarea.form-control {{ redis.password }}
+    h5(ng-show="!redis.password") (no password)
+    
+    br
+    a.btn.btn-primary(ng-href="/#/vps/{{ vps._id }}") Ok
+
+
+div(ng-show="vps && vps.redis && !loading && !installed")
+    h1 Remove Redis
+    .alert.alert-info.center(ng-show="message") {{ message }}
+    p: strong All settings and data will be deleted.
+    br
+    .row
+        .col-sm-4
+            input.form-control(type="password" ng-model="redis.rootPassword" placeholder="Root password")
+    br
+    button.btn.btn-danger(ng-click="uninstall()") Uninstall and delete data    
+    span.help-block from server 
+        strong {{ vps._id }}
+
+
+div(ng-show="removed")
+    .alert.alert-info.center(ng-show="message") {{ message }}
+    h1 Redis was removed
+    p Redis has been successfully removed from the server.
+    br
+    a.btn.btn-primary(ng-href="/#/vps/{{ vps._id }}") Ok
+

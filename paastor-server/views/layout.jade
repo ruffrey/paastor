@@ -1,0 +1,80 @@
+doctype html
+html(ng-app="paastor")
+  head
+    block vars
+        - meta = meta || { keywords: "nodejs, paas, deployment, production, forever", "description": "Deploy and keep up Node.js apps, MongoDB and Redis, on your own server."};
+
+    if (title)
+        title= title + " - Paastor for Node.js"
+    if (error)
+        title= error.message
+    else
+        title= "Paastor for Node.js"
+
+    meta(charset="utf8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    meta(name="keywords" content=meta.keywords)
+    meta(name="description" content=meta.description)
+
+    link(rel="icon" type="image/png" href="/favicon.png")
+    link(rel="shortcut icon" type="image/png" href="/favicon.png")
+    link(href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet")
+    link(rel='stylesheet' href='/css/bootstrap-lgr.css')
+    link(rel='stylesheet' href='/css/animate.css')
+    link(rel='stylesheet' href='/css/style.css')
+
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js")
+    script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js")
+
+    script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular.min.js")
+    script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular-route.min.js")
+    script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular-resource.min.js")
+    script(src="https://js.stripe.com/v2/")
+    script(src="/build/js/app.js")
+  body(ng-controller="NavController")
+    block content
+
+    br
+    br
+    br
+    br
+    br
+    br
+    br
+
+    #footer
+        .row
+            .col-xs-4(ng-show="!account.email")
+                span.help-block
+                    strong: a(href="/") Paastor
+                    | &nbsp;&nbsp;
+                    span.hidden-xs: small  A PaaS-like experience with your own servers.
+
+            .col-xs-4(ng-show="account.email")
+                span.help-block
+                    a(href="/#/list"): strong
+                        span.hidden-xs Paastor
+                        |   Server Manager
+
+            .col-xs-4.center: span.help-block
+                a(href="/pages/vision.html") About
+                | &nbsp;&nbsp;&nbsp;&nbsp;
+                a(href="/pages/docs.html") Docs
+
+
+            .col-xs-4.right
+                span.help-block(ng-show="account.email")
+                    small.hidden-xs: small {{ account.email }}
+                    | &nbsp;&nbsp;
+                    a.btn.btn-xs.btn-default(href="javascript:void(0)" ng-click="logout()") Sign Out
+    script(async).
+        if (document.location.hostname === 'paastor.com') {
+            if (document.location.protocol === 'http:') {
+                window.open(document.location.href.replace('http:', 'https:'), '_self');
+            }
+            // google analytics
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-54875912-1', 'auto');
+            ga('send', 'pageview');
+        }

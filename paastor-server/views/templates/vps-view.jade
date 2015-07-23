@@ -1,0 +1,194 @@
+.alert.alert-info(ng-show="message") {{ message }}
+div(ng-show="isUpgrading")
+    h2 Updating server
+    h5 v{{ vps.info.version || '?.?.?' }}&nbsp;&nbsp;
+        i.fa.fa-chevron-right
+        | &nbsp;&nbsp;v{{ vps.sheepLatest }}
+    h5 This will take a few moments...
+    h1: i.fa.fa-circle-o-notch.fa-spin
+
+div(ng-show="!vps && !isUpgrading")
+    h2 processing...
+    h1: i.fa.fa-circle-o-notch.fa-spin
+.row(ng-show="vps && !isUpgrading")
+    .col-sm-4
+        h5: a(href="/#/list")
+            i.fa.fa-angle-left
+            |  servers
+        h2 {{ vps._id }}
+
+        h6 on {{ vps.infrastructure }} at {{ vps.ip }}
+        h6(ng-show="!vps.info.uptime") not reachable
+
+        table.table-condensed(ng-show="vps.info.uptime" style="width: 100%")
+            tr
+                th.col-xs-3 Uptime
+                td {{ vps.info.uptime | readableTime }}
+            tr
+                th Status
+                td {{ vps.status }}
+
+            tr
+                th(valign="top") Node
+                td {{ vps.info.node_versions.join(', ') }}
+                    span.help-block Add more from the CLI
+            tr
+                th(valign="top") Redis
+                td
+                    a(ng-href="/#/vps/{{ vps._id }}/redis")
+                        | {{ vps.redis ? 'Installed' : 'Not installed' }}
+                    span.help-block(ng-show="vps.redis")
+                        code /etc/redis/redis.conf
+            tr
+                th(valign="top") MongoDB
+                td
+                    a(ng-href="/#/vps/{{ vps._id }}/mongo")
+                        | {{ vps.mongo ? 'Installed' : 'Not installed' }}
+                    span.help-block(ng-show="vps.mongo")
+                        code /etc/mongodb.conf
+
+            tr
+                th(valign="top") RAM
+                td {{ vps.info.usedmem.toFixed(2) }} MB /
+                    | {{ (vps.info.totalmem / 1024).toFixed(2) / 1024 }} MB
+                    .progress
+                        .progress-bar(
+                            style="width: {{ vps.info.memPer }}%")
+
+            tr
+                td(valign="top")
+                    strong CPU
+                    br
+                    a(href="javascript:void(0)"
+                        ng-click="showCpu = !showCpu") {{ vps.info.cpus.length }} cores
+
+                td
+                    | {{ vps.info.cpuPer.toFixed(2) }}%
+                    table.table.table-condensed(ng-init="showCpu = false" ng-show="showCpu")
+                        tr(ng-repeat="cpu in vps.info.cpus")
+                            td {{ cpu.model }}
+                    .progress: .progress-bar(
+                            style="width: {{ vps.info.cpuPer }}%"
+                        ng-class="{ 'progress-bar-success': vps.info.cpuPer < 25, 'progress-bar-warning': vps.info.cpuPer > 65, 'progress-bar-danger': vps.info.cpuPer > 90 }")
+
+            tr
+                td(valign="top")
+                    strong Storage
+                td Apps {{ vps.info.apps_size || "unknown" }}
+                    br
+                    | Logs {{ vps.info.logs_size || "unknown" }}
+            tr
+                td
+                td
+
+            tr(ng-repeat="disk in vps.info.drives")
+                td(style="word-break: break-all" valign="top") {{ disk.mountpoint }}
+                td {{ disk.used }} / {{ disk.total }}
+                    .progress: .progress-bar(style="width: {{ disk.usedPer }}%"
+                        ng-class="{ 'progress-bar-success': disk.usedPer < 25, 'progress-bar-warning': disk.usedPer > 65, 'progress-bar-danger': disk.usedPer > 90 }")
+
+        br
+        br
+
+        button.btn.btn-primary.btn-xs(
+            ng-click="showUpdatePanel = !showUpdatePanel") Upgrade/reinstall server...
+        .well.panel(ng-show="showUpdatePanel")
+            p Please confirm the Sheep service update on the server.
+            p The server may be unavailable for several minutes.
+            p: strong All apps on the server will go down during the installation.
+            p If this is a production server, it is recommended that you test the upgrade
+                | on a development server first.
+            p v{{ vps.info.version || "?.?.?"}} to 
+                a(href="http://cdn.paastor.com" target="_blank") latest
+            br
+            input.form-control(type="password" ng-model="password" placeholder="enter root password")
+            br
+            button.btn.btn-primary(ng-click="updateSheep()") I understand, update now
+        br
+        br
+
+        button.btn.btn-danger.btn-xs(ng-click="showRemove = !showRemove") Delete server...
+        .well.panel(ng-show="showRemove")
+            p Please confirm the deletion of this server from your Paastor account.
+            P While no changes will be made on the server itself, it will become disconnected
+                | from Paastor and there will be no way to manage the server or the apps.
+            button.btn-danger.btn-xs(ng-click="remove()") Permanently delete this server
+        br
+        br
+        br
+    .col-sm-8
+        a.btn.btn-primary.pull-right(ng-href="/#/vps/{{ vps._id }}/app") new app
+        p {{ vps.info.processes.length || '0' }} app{{vps.info.apps.length === 1 ? '' : 's'}} running / {{ vps.info.apps.length || '0' }} total
+            br
+            a(href="/pages/usage.html" target="_blank"): strong App Deployment Guide
+
+        br
+
+        //- Apps listing
+
+        .panel(ng-repeat="app in vps.info.apps"
+            ng-init="isRunning = vps.info.processes.indexOf(app._id) !== -1;"
+            ng-class="{ 'panel-primary': isRunning, 'panel-warning': !isRunning }"
+        )
+            .panel-heading: h3.white {{ app._id }}
+                span.pull-right(ng-show="app.processing"): i.fa.fa-circle-o-notch.fa-spin
+                .btn-group.pull-right(ng-show="!app.processing")
+                    button.btn.btn-xs.btn-default(ng-click="action(app, 'start')") Start
+                    button.btn.btn-xs.btn-default(ng-click="action(app, 'restart')") Restart
+                    button.btn.btn-xs.btn-default(ng-click="action(app, 'kill')") Stop
+                    button.btn.btn-xs.btn-danger(ng-click="removeApp(app)") Delete
+
+            .panel-body
+                .alert.alert-info(ng-show="app.message") {{ app.message }}
+                br
+                .row
+                    .col-sm-4: table.table
+                        tr
+                            td Status
+                            td: strong {{ app.status }}
+                        tr
+                            td Running
+                            td: i.fa(ng-class="{ 'fa-check success': isRunning, 'fa-ban text-danger': !isRunning }")
+                        tr
+                            td Node
+                            td
+                                strong {{ app.engines.node || 'unknown' }}
+                                span.help-block From package.json engines.node
+
+                        tr
+                            td SSL
+                            td
+                                i.fa(ng-class="{ 'fa-check': app.ssl, 'fa-unlock': !app.ssl }")
+                                a.btn.btn-xs.btn-default.pull-right(href="/#/vps/{{ vps._id }}/ssl/{{ app._id }}")
+                                    i.fa.fa-edit
+
+                    .col-sm-8: table.table
+                        tbody
+                            tr(ng-init="editDomains = false")
+                                td.col-xs-3 domains
+                                td.col-xs-9
+                                    strong {{ app.domains.join(', ') }}
+                                    span.help-block From package.json domains
+                            tr
+                                td: code PAASTOR_PORT
+                                td
+                                    code {{ app.port }}
+                                    span.help-block system assigned - not editable
+
+                            tr(ng-init="editEnv = false")
+                                td: code process.env
+                                td.wrapall(ng-show="!editEnv" ng-click="editEnv = true") {{ app.env }}
+                                    button.btn.btn-xs.btn-default.pull-right(ng-click="editEnv = true")
+                                        i.fa.fa-edit
+
+                                td(ng-show="editEnv")
+                                    textarea.monospace.form-control(
+                                        ng-model="app.newEnv"
+                                        ng-init="app.newEnv = app.env"
+                                        rows="3"
+                                    )
+                                    br
+                                    button.btn.btn-xs.btn-default(ng-click="editEnv = false")
+                                        i.fa.fa-remove
+                                    button.btn.btn-xs.btn-primary(ng-click="setEnv(app);editEnv = false;") Set env
+                                    span.help-block Restart the app to apply changes.
